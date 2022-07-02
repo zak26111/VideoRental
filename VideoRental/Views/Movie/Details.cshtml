@@ -1,0 +1,33 @@
+﻿@model VideoRental.Models.Movie
+@{
+    ViewBag.Title = "Details";
+  
+}
+
+<h2>Movie Details</h2>
+
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Movie Name</th>
+            <th>Genre Type</th>
+            <th>Release Date</th>
+            <th>Date Added</th>
+            <th>Number In Stock</th>
+            
+            
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.Name</td>
+            <td>@Model.Genre.Name</td>
+            <td>@Model.ReleaseDate</td>
+            <td>@Model.DateAdded</td>
+            <td>@Model.NumberInStock</td>
+           
+        </tr>
+    </tbody>
+</table>
+
+@Html.ActionLink("Back To List", "Index","",new { @class="btn btn-success"})

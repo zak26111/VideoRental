@@ -1,0 +1,108 @@
+﻿@*@model IEnumerable<VideoRental.Models.Movie>*@
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<br />
+@Html.ActionLink("New Movie", "New", "", new { @class = "btn btn-primary" })
+<br />
+<div>
+    <h2>Movie List</h2>
+    @*@if (!Model.Any())
+        {
+            <p>No Records Found</p>
+        }
+        else
+        {
+            <table class="table table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>Movie</th>
+                        <th>Genre Type</th>
+                        <th>Details</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var movie in Model)
+                    {
+                        using (Html.BeginForm("Delete", "Movie", new { id = movie.Id }))
+                        {
+                            <tr>
+                                <td>@Html.ActionLink(movie.Name, "Edit", new { id = movie.Id })</td>
+                                <td>@movie.Genre.Name</td>
+                                <td>@Html.ActionLink("Details", "Details", new { id = movie.Id })</td>
+                                <td><input type="submit" class="btn btn-link" value="Delete" onclick="return confirm('Are you sure, do you want to delete this record')" /></td>
+                            </tr>
+                        }
+
+                    }
+
+                </tbody>
+            </table>
+        }*@
+
+    <table id="movies" class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Movie </th>
+                <th>Genre Type</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+</div>
+@section scripts
+{
+
+    <script>
+        $(document).ready(function () {
+
+            var table = $('#movies').DataTable({
+                ajax:
+                {
+                    url: "/api/movies",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, movie) {
+                            return "<a href='movie/edit/" + movie.id + "'>" + movie.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "genre.name"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button data-movie-id=" + data + " class='btn btn-link js-delete'> Delete</button>"
+                        }
+                    }
+
+                ]
+            });
+
+            $("#movies").on("click", ".js-delete", function () {
+                var button = $(this);
+                bootbox.confirm("Are you sure, do you want to delete this record?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/movies/" + button.attr('data-movie-id'),
+                            method: "Delete",
+                            success: function () {
+                                table.row(button.parents('tr')).remove().draw();
+                            }
+                        })
+                    }
+
+                })
+            })
+        })
+    </script>
+}

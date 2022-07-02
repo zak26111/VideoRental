@@ -1,0 +1,53 @@
+﻿
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<br />
+@Html.ActionLink("New Movie", "New", "", new { @class = "btn btn-primary" })
+<br />
+<div>
+    <h2>Movie List</h2>
+   
+
+    <table id="movies" class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Movie </th>
+                <th>Genre Type</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+</div>
+@section scripts
+{
+
+    <script>
+        $(document).ready(function () {
+
+            var table = $('#movies').DataTable({
+                ajax:
+                {
+                    url: "/api/movies",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name"
+                    },
+                    {
+                        data: "genre.name"
+                    }
+
+                ]
+            });
+
+           
+        })
+    </script>
+}

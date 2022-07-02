@@ -1,0 +1,54 @@
+﻿@model VideoRental.ViewModels.CustomerFormVM
+@{
+    ViewBag.Title = "CustomerForm";
+}
+
+@if (Model.Customer.Id == 0)
+{
+    <h2>New Customer</h2>
+}
+else
+{
+    <h2>Edit Customer</h2>
+}
+
+
+<div>
+    @using (Html.BeginForm("Save", "Customer", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(c => c.Customer.Id)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(c => c.Customer.Name)
+            @Html.TextBoxFor(c => c.Customer.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.Customer.Name, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(c => c.Customer.MemberShipTypeId)
+            @Html.DropDownListFor(c => c.Customer.MemberShipTypeId, new SelectList(Model.MemberShipTypes, "Id", "Name"), "Select Membership Type", new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.Customer.Name, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(c => c.Customer.DateOfBirth)
+            @Html.TextBoxFor(c => c.Customer.DateOfBirth, new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.Customer.DateOfBirth, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.CheckBoxFor(c => c.Customer.IsSubscribeToNewsLetter) Is Subscribe To Newsletter?
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            @Html.ActionLink("Back To List", "Index", "", new { @class = "btn btn-success" })
+        </div>
+    }
+
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}

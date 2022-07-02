@@ -1,0 +1,65 @@
+﻿@model VideoRental.ViewModels.MovieFormVM
+@{
+    ViewBag.Title = "Movie Form";
+}
+
+
+@if (Model.Movie.Id == 0)
+{
+    <h2>New Movie</h2>
+}
+else
+{
+
+    <h2>Edit Movie</h2>
+}
+
+
+<div>
+    @using (Html.BeginForm("Save", "Movie", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(c => c.Movie.Id)
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(c => c.Movie.Name)
+            @Html.TextBoxFor(c => c.Movie.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.Movie.Name, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(c => c.Movie.GenreId)
+            @Html.DropDownListFor(c => c.Movie.GenreId, new SelectList(Model.Genres, "Id", "Name"), "Select Genre Type", new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.Movie.GenreId, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(c => c.Movie.ReleaseDate)
+            @Html.EditorFor(c => c.Movie.ReleaseDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(c => c.Movie.ReleaseDate, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(c => c.Movie.DateAdded)
+            @Html.TextBoxFor(c => c.Movie.DateAdded, new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.Movie.DateAdded, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(c => c.Movie.NumberInStock)
+            @Html.TextBoxFor(c => c.Movie.NumberInStock, new { @class = "form-control" })
+            @Html.ValidationMessageFor(c => c.Movie.NumberInStock, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+            @Html.ActionLink("Back To List", "Index", "", new { @class = "btn btn-success" })
+        </div>
+    }
+
+</div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
